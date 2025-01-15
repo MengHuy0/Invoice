@@ -4,88 +4,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>invoice_project</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="">
-    <!-- icon link -->
+    <title>Document</title>
+    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-    <!-- navigation bar -->
-    <nav>
-        <!-- humberger button -->
-        <input type="checkbox" id="check">
-        <label for="check">
-            <i class="fa fa-bars" id="btn"></i>
-            <i class="fa fa-close" id="cancel"></i>
-        </label>
-        <!-- List and Img page on navigation bar -->
-        <a href="#">
-            <img src="https://easyinvoicepro.com/assets/images/logo.png" alt="Invoice"></a></div>
-        </a>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Feedback</a></li>
-            <li><a href="#">LogIn</a></li>
-        </ul>
-    </nav>
-    <!-- img galary -->
-    <div class="slider">
+    <header>
+        <div class="navigation">
+            <input type="checkbox" id="check">
+            <label for="check" class="check_btn">
+                <i class="fas fa-bars"></i>
+            </label>
+            <label for="logo">EasyInvoice</label>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#social">Contact</a></li>
+                <li><button class="btnLogin-popup">Login</button></li>
+            </ul>
+        </div>
+    </header>
+    <div class="cover_box">
+        <span class="icon-close"><ion-icon name="close-outline"></ion-icon></span>
+        <div class="form-box login">
+            <h2>Login</h2>
+            <form action="#">
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
+                    <input type="email" required>
+                    <label>Email</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                    <input type="password" required>
+                    <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                    <label><input type="checkbox">Remember me</label>
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <div class="login-register">
+                    <p>Don't have an account <a href="" class="register-link">Register</a></p>
+                </div>
+            </form>
+        </div>
+        <!-- Register -->
+        <div class="form-box register">
+            <h2>Register</h2>
+            <form action="#">
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <input type="text" required>
+                    <label>Username</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
+                    <input type="email" required>
+                    <label>Email</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                    <input type="password" required>
+                    <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                    <label><input type="checkbox">Agree to terms & conditions</label>
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn">Register</button>
+                <div class="login-register">
+                    <p>Already have an account? <a href="#" class="login-link">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+     <!-- img galary -->
+     <div class="slider">
         <div class="slides">
-            <img class="slide" src="../pageProject/img/img1.png" alt="Image #1">
-            <img class="slide" src="../pageProject/img/img2.avif" alt="Image #2">
-            <img class="slide" src="../pageProject/img/im3.png" alt="Image #3">
-            <img class="slide" src="../pageProject/img/img4.avif" alt="Image #4">
-            <img class="slide" src="../pageProject/img/img5.avif" alt="Image #5">
-            <img class="slide" src="../pageProject/img/img6.jpg" alt="Image #6">
-            <img class="slide" src="../pageProject/img/img8.jpg" alt="Image #8">
+            <img class="slide" src="./img/img1.png" alt="Image #1">
+            <img class="slide" src="./img/img2.avif" alt="Image #2">
+            <img class="slide" src="./img/im3.png" alt="Image #3">
+            <img class="slide" src="./img/img4.avif" alt="Image #4">
+            <img class="slide" src="./img/img5.avif" alt="Image #5">
+            <img class="slide" src="./img/img6.jpg" alt="Image #6">
+            <img class="slide" src="./img/img8.jpg" alt="Image #8">
         </div>
         <button class="prev" onclick="prevSlide()">&#10094</button>
         <button class="next" onclick="nextSlide()">&#10095</button>
     </div>
-    <!-- Feedback and LogIn -->
-    <div class="main">
-        <div class="mainbox">
-            <div class="form-feedback">
-                <form action="">
-                    <h1>Give Your Feedback</h1>
-                    <div class="id">
-                        <input type="text" placeholder="Full Name">
-                        <i class="fa fa-user"></i>
-                    </div>
-                    <div class="email">
-                        <input type="email" placeholder="Email Address">
-                        <i class="fa fa-envelope"></i>
-                    </div>
-                    <textarea cols="15" rows="5" placeholder="Please Enter Your Feedback"></textarea>
-                    <button>Send</button>
-                </form>
-            </div>
-            <div class="login">
-                <form>
-                    <h1>Log In</h1>
-                    <div class="id"><i class="fa fa-envelope"></i>
-                        <input type="email" placeholder="Email">
-                    </div>
-                    <div class="email">
-                        <i class="fa fa-key icon"></i>
-                        <input type="password" placeholder="Password">
-                    </div>
-                    <div>
-                        <button>LogIn</Button>
 
-                        <button>SignUp</button>
-                        <button>Forget Password</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <!-- add about box -->
-    <div class="section">
+    <div class="section" id="about">
         <div class="container">
             <div class="title">
                 <h1>About Us</h1>
@@ -100,11 +112,10 @@
                     </div>
                 </div>
                 <div class="img-section">
-                    <img src="../pageProject/img/img-aboutUs.jpg" alt="About-Us">
+                    <img src="./img/img-aboutUs.jpg" alt="About-Us">
                 </div>
             </div>
-
-            <div class="social">
+            <div class="social" id = "social">
                 <a href=""><i class="fa fa-facebook-f"></i></a>
                 <a href=""><i class="fa fa-twitter"></i></a>
                 <a href=""><i class="fa fa-instagram"></i></a>
@@ -118,11 +129,9 @@
             </div>
         </div>
     </div>
-    </section>
-
-
-
     <script src="index.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>
