@@ -1,0 +1,600 @@
+@font-face {
+  font-family: SourceSansPro;
+  src: url(SourceSansPro-Regular.ttf);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative;
+  width: 900px;
+  height: 100%;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  font-family: SourceSansPro;
+  justify-content: center;
+  align-items: center;
+  background-image: url(https://images.unsplash.com/photo-1733064515562-be3d5f1e6f76?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+  background-repeat: no-repeat ;
+  background-size: cover;
+}
+
+.dashborad {
+  border: 2px solid black;
+  margin: 10px;
+  padding: 10px;
+}
+
+.wapper {
+  margin: 0;
+  padding: 0;
+  border: 2px solid black;
+  display: flex;
+  /* background-color: aqua; */
+  border-radius: 30px;
+  flex-direction: column;
+
+}
+
+.sideBar {
+  margin: 10px;
+  padding: 0;
+  border: 2px solid black;
+  height: 10%;
+  width: 95%;
+  /* background-color: #b6d407; */
+  border-radius: 30px;
+  z-index: 100;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0;
+  flex-direction: column;
+}
+
+/* sidebar logo */
+.logoEasyinvoice {
+  color: #d64848d0;
+  user-select: none;
+  font-size: 50px;
+  line-height: 50px;
+  padding: 0 10px;
+  font-family: SourceSansPro;
+  font-weight: bold;
+}
+
+.navigation ul {
+  float: right;
+  margin-right: 10px;
+}
+
+.navigation ul li {
+  display: inline-block;
+  line-height: 50px;
+  margin: 30px 0;
+}
+
+.navigation ul li a {
+  position: relative;
+  font-size: 1.1em;
+  color: #066445;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 40px;
+  padding: 7px 13px;
+  border-radius: 3px;
+  text-transform: uppercase;
+
+}
+
+.navigation ul li a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 3px;
+  border-radius: 5px;
+  transform-origin: 50% 50%;
+  transform: scale(0);
+  transition: transform .5s;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  background: linear-gradient(to right, #fff, #f3f3f3);
+}
+
+.navigation ul li a:hover::after {
+  transform-origin: right;
+  transform: scaleX(1);
+}
+
+.navigation ul li .btnLogin-popup {
+  width: 130px;
+  height: 50px;
+  background: transparent;
+  border: 2px solid #570303;
+  outline: none;
+  cursor: pointer;
+  font-size: 1.1em;
+  color: #42675b;
+  font-weight: 500;
+  margin-left: 40px;
+  border-radius: 30px;
+}
+
+.navigation ul li .btnLogin-popup:hover {
+  background-color: #1e33cc;
+  color: #fff;
+}
+
+ul li a.active,
+ul li a:hover {
+  background: #05190a;
+  transition: 0.5s;
+}
+
+.check_btn {
+  font-size: 25px;
+  color: white;
+  float: left;
+  line-height: 50px;
+  margin-right: 10px;
+  cursor: pointer;
+  display: none;
+}
+
+#check {
+  display: none;
+}
+
+@media (max-width:865px) {
+  .check_btn {
+    display: block;
+  }
+
+  ul {
+    position: fixed;
+    width: 50%;
+    height: 70vh;
+    background-attachment: #35a45a;
+    top: 100px;
+    left: -100%;
+    text-align: left;
+    transition: all .5s;
+    border: 2px solid #13e23c;
+    border-radius: 6px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+
+  }
+
+  header .navigation ul li {
+    display: block;
+    margin: 50px 0;
+    line-height: 20px;
+    flex-direction: column;
+
+  }
+
+  header.navigationul li a {
+    font-size: 20px;
+  }
+
+  #check:checked~ul {
+    left: 0;
+  }
+}
+
+/* invoice */
+.invoice {
+  position: relative;
+  width: 21cm;
+  height: 29.7cm;
+  margin: 5px auto;
+  color: #555555;
+  background: #FFFFFF;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-family: SourceSansPro;
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+a {
+  color: #0087C3;
+  text-decoration: none;
+}
+
+
+
+header {
+  padding: 10px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #AAAAAA;
+
+}
+
+#company-logo {
+  float: left;
+  margin-top: 8px;
+  margin-left: 10px;
+  width: 200px;
+}
+
+#company-logo img {
+  height: 100px;
+  
+}
+#invoice-logo{
+  height: 150px;
+  width: 100px;
+}
+#company {
+  float: right;
+  text-align: right;
+}
+
+
+#details {
+  margin-bottom: 50px;
+}
+
+#client {
+  padding-left: 6px;
+  border-left: 6px solid #0087C3;
+  float: left;
+}
+
+#client .to {
+  color: #777777;
+}
+
+h2.name {
+  font-size: 1.4em;
+  font-weight: bold;
+  margin: 0;
+}
+
+h2.customer_name {
+  font-size: 1.4em;
+  font-weight: normal;
+  margin: 0;
+}
+
+#invoice {
+  float: right;
+  text-align: right;
+}
+#invoice h1 {
+  color: #0087C3;
+  font-size: 2.4em;
+  line-height: 1em;
+  font-weight: normal;
+  margin: 0 0 10px 0;
+}
+
+#invoice .date {
+  font-size: 1.1em;
+  color: #777777;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+table th,
+table td {
+  padding: 10px;
+  background: #EEEEEE;
+  text-align: center;
+  border-bottom: 1px solid #FFFFFF;
+}
+
+table th {
+  white-space: nowrap;
+  font-weight: normal;
+}
+
+table td {
+  text-align: right;
+}
+
+table td h3 {
+  color: #57B223;
+  font-size: 1.2em;
+  font-weight: normal;
+  margin: 0 0 0.2em 0;
+}
+
+table .no {
+  color: #FFFFFF;
+  font-size: 1.2em;
+  background: #57B223;
+}
+
+table .desc {
+  text-align: left;
+}
+
+table .unit {
+  background: #DDDDDD;
+}
+
+table .qty {
+  color: black;
+}
+
+table .total {
+  background: #57B223;
+  color: #FFFFFF;
+}
+
+/* style each item */
+table .no_no {
+  color: #FFFFFF;
+  font-size: 1.6em;
+  background: #57B223;
+}
+
+table .desc_no {
+  text-align: left;
+}
+
+table .unit_no {
+  background: #DDDDDD;
+}
+
+table .qty_no {
+  color: black;
+}
+
+table .total_no {
+  background: #57B223;
+  color: #FFFFFF;
+}
+/* item-list */
+table .no-item {
+  color: #FFFFFF;
+  font-size: 1.6em;
+  background: #f18d1a;
+}
+
+table .desc-item {
+  text-align: left;
+}
+
+table .unit-item {
+  background: #DDDDDD;
+}
+
+table .qty-item {
+  color: black;
+}
+
+table .total-item {
+  background: #57B223;
+  color: #FFFFFF;
+}
+
+table td.unit,
+table td.qty,
+table td.total {
+  font-size: 1.2em;
+}
+
+table tbody tr:last-child td {
+  border: none;
+}
+
+table tfoot td {
+  padding: 10px 20px;
+  background: #FFFFFF;
+  border-bottom: none;
+  font-size: 1.2em;
+  white-space: nowrap;
+  border-top: 1px solid #AAAAAA;
+}
+
+table tfoot tr:first-child td {
+  border-top: none;
+}
+
+table tfoot tr:last-child td {
+  color: #57B223;
+  font-size: 1.4em;
+  border-top: 1px solid #57B223;
+
+}
+
+table tfoot tr td:first-child {
+  border: none;
+}
+
+#thanks {
+  font-size: 2em;
+  margin-bottom: 50px;
+}
+
+#notices {
+  padding-left: 6px;
+  border-left: 6px solid #0087C3;
+}
+
+#notices .notice {
+  font-size: 1.2em;
+}
+
+footer {
+  color: #777777;
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid #AAAAAA;
+  padding: 8px 0;
+  text-align: center;
+}
+/* 
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.form-container input {
+  width: 100%;  
+  height: 30px;       
+  padding: 20px;      
+  font-size: 16px;     
+  margin-bottom: 10px; 
+  border: 1px solid #ac3636; 
+  border-radius: 5px;  
+}
+
+.form-container input:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+#add {
+  width: 30px;
+  padding: 12px;
+  background-color: #34db4a;
+  color: rgb(16, 17, 10);
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.3s;
+  border-radius: 10px;
+}
+
+
+#add:hover {
+  background-color: #2980b9;
+}
+
+.form-container button {
+  margin-top: 10px;} */
+/* 
+  input box */
+  .input-box input {
+    width: 20%; /* Set the width to 100% of the container */
+    padding: 15px; /* Add padding to make the input field larger */
+    font-size: 16px; /* Increase font size for better visibility */
+    margin: 5px 0; /* Add some space between inputs */
+    border: 2px solid #ccc; /* Set a border color */
+    border-radius: 5px; /* Optional: Round the corners of the input field */
+  }
+  
+  .input-box button {
+    padding: 15px 30px;
+    font-size: 16px; 
+    margin-top: 10px;
+    background-color: #4CAF50; 
+    color: white;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer; 
+  }
+  
+  .input-box button:hover {
+    background-color: #45a049;}
+
+    #edit-button,
+    #save-button{
+      padding: 15px 30px;
+      font-size: 16px; 
+      margin-top: 10px;
+      background-color: #4CAF50; 
+      color: white;
+      border: none;
+      border-radius: 5px; 
+      cursor: pointer; 
+    }
+
+    /* cover-popup */
+    .hidden {
+      display: none;
+    }
+    
+    .customer-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      width: 1000px;
+    }
+    
+    .customer-popup .close-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      float: right;
+      margin-top: 0px;
+      margin-right: 0px;
+      border-radius: 50%;
+    }
+    /* .customer-table{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    } */
+     .hiddenInventory{
+      display: none;
+     }
+     .inventory-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      width: 1000px;
+    }
+    
+    .inventory-popup .close-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      float: right;
+      margin-top: 0px;
+      margin-right: 0px;
+      border-radius: 50%;
+    }

@@ -55,3 +55,8 @@ function nextSlide(){
 slideIndex++;
 showSlide(slideIndex);
 }
+
+document.getElementById('loginBtn').addEventListener('click', (event) => {
+    event.preventDefault(); 
+  
+    window.location.href = 'invoicePage.html';});

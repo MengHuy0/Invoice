@@ -186,8 +186,10 @@ ul li a:hover {
     transform: scale(0);
     overflow: hidden;
     transition: transform .5s ease, height .5s ease, border-color .5s ease;
-    margin: 200px 0;
+    margin: 200px 100px;
     z-index: 2;
+
+
 
 }
 
@@ -221,6 +223,7 @@ ul li a:hover {
 .covor_box .form-box {
     width: 100%;
     padding: 40px;
+
 }
 
 .covor_box .form-box.login {
@@ -233,6 +236,7 @@ ul li a:hover {
 .cover_box.active .form-box.login {
     transition: none;
     transform: translateX(-400px);
+    
 
 }
 
@@ -264,7 +268,7 @@ ul li a:hover {
 }
 
 .form-box h2 {
-    color: #fff;
+    color: #14a045;
     font-size: 2em;
     margin-bottom: 20px;
     text-align: center;
@@ -375,7 +379,7 @@ ul li a:hover {
 }
 
 .login-register p a {
-    color: #9a9a9a;
+    color: #da0404;
     text-decoration: none;
     font-weight: 600;
 }
