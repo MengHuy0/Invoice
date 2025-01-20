@@ -1,3 +1,33 @@
+function calculateTotal() {
+    let totalsArray = []; // Array to store individual totals
+    let totalSum = 0; // Variable to store the sum
+
+    // Loop through total-1 to total-12
+    for (let i = 1; i <= 12; i++) {
+        const totalElement = document.getElementById(`total-${i}`);
+        if (totalElement) {
+            // Extract the numeric value, removing "$" and commas
+            const value = parseFloat(totalElement.textContent.replace('$', '').replace(',', '').trim());
+            if (!isNaN(value)) {
+                totalsArray.push(value); // Add to the array
+                totalSum += value; // Add to the sum
+            }
+        }
+    }
+
+    // Display the total in the total-all element
+    const totalAllElement = document.getElementById('total-all');
+    if (totalAllElement) {
+        totalAllElement.textContent = `$${totalSum.toFixed(2)}`;
+    }
+
+    console.log("Totals Array:", totalsArray); 
+}
+
+// Call the function to calculate the total
+calculateTotal();
+
+
 // profile info
 const profileData = {
     name: 'Meng Huy',
@@ -106,28 +136,32 @@ function clear_inventory(id) {
 }
 
 function edit_inventory(id) {
-    const item = inventory.find(item => item.id === id);
+    const item = inventory.find(item => item.id === id); // Find the item in inventory
     if (item) {
-
+        // Populate input fields with the item's current values
         textInput.value = item.name;
         priceInput.value = item.price;
         quantityInput.value = item.quantity;
 
-
+        // Set the editing state
         editingId = id;
 
-
+        // Update the button text to indicate editing
         btm.textContent = "Update";
+        btm.classList.add('editing'); // Optionally add a class for styling during editing
     }
 }
+
 
 function clearInputs() {
     textInput.value = "";
     priceInput.value = "";
     quantityInput.value = "";
-    editingId = null;
-    btm.textContent = "Add";
+    editingId = null; // Reset the editing state
+    btm.textContent = "Add"; // Reset button text
+    btm.classList.remove('editing'); // Remove the editing class
 }
+
 
 btm.addEventListener('click', () => {
     const text = textInput.value.trim();
@@ -140,22 +174,24 @@ btm.addEventListener('click', () => {
     }
 
     if (editingId) {
-
+        // Update the existing item
         const itemIndex = inventory.findIndex(item => item.id === editingId);
         if (itemIndex !== -1) {
             inventory[itemIndex] = { id: editingId, name: text, price, quantity };
         }
-        editingId = null;
-        btm.textContent = "Add";
+        editingId = null; // Reset editing state
+        btm.textContent = "Add"; // Reset button text
+        btm.classList.remove('editing'); // Remove editing class
     } else {
-
+        // Add a new item
         const lastId = inventory.length ? inventory[inventory.length - 1].id : 0;
         inventory.push({ id: lastId + 1, name: text, price, quantity });
     }
 
-    renderInventory();
-    clearInputs();
+    renderInventory(); // Re-render the inventory table
+    clearInputs(); // Clear input fields
 });
+
 renderInventory();
 
 
@@ -322,3 +358,5 @@ function updateInvoice() {
 
   // Initial call to populate totals when the page loads
   updateInvoice();
+
+ 

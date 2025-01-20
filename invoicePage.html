@@ -72,84 +72,84 @@
                   <td class="desc_no">Website Design</td>
                   <td class="unit_no">$40.00</td>
                   <td class="qty_no">30</td>
-                  <td class="total_no">$1,200.00</td>
+                  <td class="total_no" id="total-1">$1,200</td>
                 </tr>
                 <tr>
                   <td class="no">02</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-2">$3,200</td>
                 </tr>
                 <tr>
                   <td class="no">03</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-3">$3,200</td>
                 </tr>
                 <tr>
                   <td class="no">04</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-4">$3,200</td>
                 </tr>
                 <tr>
                   <td class="no">05</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-5">$3,200</td>
                 </tr>
                 <tr>
                   <td class="no">06</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-6">$3,200</td>
                 </tr>
                 <tr>
                   <td class="no">07</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-7">$3,200</td>
                 </tr>
                 <tr>
                   <td class="no">08</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-8">$3,200</td>
                 </tr>
                 <tr>
                   <td class="no">09</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-9">$3,200</td>
                 </tr>
                 <tr>
                   <td class="no">10</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-10">$3,200</td>
                 </tr>
                 <tr>
                   <td class="no">11</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-11">$8.500.5</td>
                 </tr>
                 <tr>
                   <td class="no">12</td>
                   <td class="desc">Website Development</td>
                   <td class="unit">$40.00</td>
                   <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
+                  <td class="total" id="total-12">$3,200</td>
                 </tr>
                 <tr>
                   <td></td>
@@ -163,7 +163,7 @@
                 <tr>
                   <td colspan="2"></td>
                   <td colspan="2">Total</td>
-                  <td>$5,200.00</td>
+                  <td id="total-all">$5,200</td>
                 </tr>
               </tfoot>
             </table>
@@ -179,7 +179,7 @@
 
   <!-- inventory pop up -->
 
-  <div>
+  <div class="inventory-popup hiddenInventory">
     <h1>Inventory list</h1>
     <div class="input-box">
       <input type="text" id="text" placeholder="Add New Item">
@@ -187,7 +187,7 @@
       <input type="text" id="quantity" placeholder="Add New quantity">
       <button id="add">add</button>
     </div>
-    <table class="inventory-popup hiddenInventory">
+    <table >
       <thead>
         <tr>
           <th class="no">#</th>
@@ -202,10 +202,11 @@
 
         </tr>
       </tbody>
+    </table>
   </div>
 
   <!-- customer information -->
-  <div>
+  <div class="customer-popup hidden">
     <h1>Customer Management</h1>
     <div class="input-box">
       <input id="customerName" type="text" placeholder="Customer Name">
@@ -214,7 +215,7 @@
       <button id="addCustomer">Add Customer</button>
 
     </div>
-    <table class="customer-popup hidden">
+    <table >
       <thead>
         <tr>
           <th class="no">Customer ID</th>
@@ -236,7 +237,7 @@
 
     <!-- Logo Upload Section -->
     <div id="logo-section">
-      <img id="profile-logo" src="default-logo.png" alt="Logo" style="width: 100px; height: 100px; object-fit: cover;">
+      <img id="profile-logo" src="logo.png" alt="Logo" style="width: 100px; height: 100px; object-fit: cover;">
       <br>
       <input type="file" id="logo-upload" accept="image/*" style="display: none;" onchange="previewLogo(event)">
       <button id="upload-logo-button" onclick="document.getElementById('logo-upload').click()">Upload Logo</button>
