@@ -1,362 +1,420 @@
-function calculateTotal() {
-    let totalsArray = []; // Array to store individual totals
-    let totalSum = 0; // Variable to store the sum
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const content = document.querySelector('.content');
+    const hamburger = document.querySelector('.hamburger');
 
-    // Loop through total-1 to total-12
-    for (let i = 1; i <= 12; i++) {
-        const totalElement = document.getElementById(`total-${i}`);
-        if (totalElement) {
-            // Extract the numeric value, removing "$" and commas
-            const value = parseFloat(totalElement.textContent.replace('$', '').replace(',', '').trim());
-            if (!isNaN(value)) {
-                totalsArray.push(value); // Add to the array
-                totalSum += value; // Add to the sum
+    // Toggle 'show' class on the sidebar
+    sidebar.classList.toggle('show');
+
+    // Adjust content visibility or positioning based on sidebar state
+    if (sidebar.classList.contains('show')) {
+        sidebar.style.marginLeft = '0'; // Adjust content margin when sidebar is shown
+        hamburger.innerHTML = '&#10005;'; // Change hamburger to a close (×) symbol
+    } else {
+        sidebar.style.marginLeft = '-80%'; // Adjust content margin when sidebar is hidden
+        hamburger.innerHTML = '&#9776;'; // Change close symbol back to hamburger (≡)
+    }
+}
+        
+
+        function logout() {
+            if (confirm("Are you sure you want to log out?")) {
+                // Redirect to a login page or clear user session data
+                alert("Logged out successfully!");
+                window.location.href = "login.html"; // Replace with your actual login page
             }
         }
-    }
+        const savedInvoices = [];
 
-    // Display the total in the total-all element
-    const totalAllElement = document.getElementById('total-all');
-    if (totalAllElement) {
-        totalAllElement.textContent = `$${totalSum.toFixed(2)}`;
-    }
-
-    console.log("Totals Array:", totalsArray); 
-}
-
-// Call the function to calculate the total
-calculateTotal();
-
-
-// profile info
-const profileData = {
-    name: 'Meng Huy',
-    email: 'menghuy0000@gmail.com',
-    phone: '081-777-344',
-    address: '123 Main St, City'
-};
-// Function to preview the uploaded logo and update the company logo in invoice
-function previewLogo(event) {
-    const file = event.target.files[0]; // Get the selected file
-    if (file) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            const profileLogo = document.getElementById("profile-logo");
-            const invoiceLogo = document.getElementById("invoice-logo");
-
-            profileLogo.src = e.target.result;
-            invoiceLogo.src = e.target.result;
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
         }
 
-        reader.readAsDataURL(file);
-    }
-}
-// Insert profile data into the invoice header and profile table
-document.getElementById('company-name').textContent = profileData.name;
-document.getElementById('company-address').textContent = profileData.address;
-document.getElementById('company-phone').textContent = profileData.phone;
-document.getElementById('company-email').textContent = profileData.email;
-document.getElementById('company-email').href = `mailto:${profileData.email}`;
+        function previewLogo() {
+            const logoInput = document.getElementById('shop-logo');
+            const logoPreview = document.getElementById('logo-preview');
 
-document.getElementById('profile-name').textContent = profileData.name;
-document.getElementById('profile-email').textContent = profileData.email;
-document.getElementById('profile-phone').textContent = profileData.phone;
-document.getElementById('profile-address').textContent = profileData.address;
-
-// Function to enable editing
-function enableEditing() {
-    document.getElementById('profile-name').contentEditable = true;
-    document.getElementById('profile-email').contentEditable = true;
-    document.getElementById('profile-phone').contentEditable = true;
-    document.getElementById('profile-address').contentEditable = true;
-    document.getElementById('edit-button').style.display = 'none';
-    document.getElementById('save-button').style.display = 'inline-block';
-}
-
-// Function to save edited data
-function saveProfileData() {
-    profileData.name = document.getElementById('profile-name').textContent;
-    profileData.email = document.getElementById('profile-email').textContent;
-    profileData.phone = document.getElementById('profile-phone').textContent;
-    profileData.address = document.getElementById('profile-address').textContent;
-
-    // Update invoice header with the new data
-    document.getElementById('company-name').textContent = profileData.name;
-    document.getElementById('company-address').textContent = profileData.address;
-    document.getElementById('company-phone').textContent = profileData.phone;
-    document.getElementById('company-email').textContent = profileData.email;
-
-    // Hide the save button and show the edit button
-    document.getElementById('edit-button').style.display = 'inline-block';
-    document.getElementById('save-button').style.display = 'none';
-
-    // Disable content editing
-    document.getElementById('profile-name').contentEditable = false;
-    document.getElementById('profile-email').contentEditable = false;
-    document.getElementById('profile-phone').contentEditable = false;
-    document.getElementById('profile-address').contentEditable = false;
-}
-
-
-
-//   import inventory
-const textInput = document.getElementById("text");
-const priceInput = document.getElementById("price");
-const quantityInput = document.getElementById("quantity");
-const btm = document.getElementById("add");
-const inventoryList = document.getElementById("inventory-list");
-
-let inventory = [
-    { id: 1, name: "car", price: 1000, quantity: 1 },
-    { id: 2, name: "motorcycle", price: 102, quantity: 11 },
-    { id: 3, name: "bike", price: 102, quantity: 11 }
-];
-
-let editingId = null;
-
-function renderInventory() {
-    inventoryList.innerHTML = inventory.map(item => `
-        <tr>
-            <td class="no_no">${item.id}</td>
-            <td class="desc_no">${item.name}</td>
-            <td class="unit_no">${item.price}</td>
-            <td class="qty_no">${item.quantity}</td>
-            <td>
-                <button class="delete" onclick="clear_inventory(${item.id})">Delete</button>
-                <button class="edit" onclick="edit_inventory(${item.id})">Edit</button>
-            </td>
-        </tr>
-    `).join("");
-}
-
-function clear_inventory(id) {
-    inventory = inventory.filter(item => item.id !== id);
-    renderInventory();
-}
-
-function edit_inventory(id) {
-    const item = inventory.find(item => item.id === id); // Find the item in inventory
-    if (item) {
-        // Populate input fields with the item's current values
-        textInput.value = item.name;
-        priceInput.value = item.price;
-        quantityInput.value = item.quantity;
-
-        // Set the editing state
-        editingId = id;
-
-        // Update the button text to indicate editing
-        btm.textContent = "Update";
-        btm.classList.add('editing'); // Optionally add a class for styling during editing
-    }
-}
-
-
-function clearInputs() {
-    textInput.value = "";
-    priceInput.value = "";
-    quantityInput.value = "";
-    editingId = null; // Reset the editing state
-    btm.textContent = "Add"; // Reset button text
-    btm.classList.remove('editing'); // Remove the editing class
-}
-
-
-btm.addEventListener('click', () => {
-    const text = textInput.value.trim();
-    const price = parseFloat(priceInput.value);
-    const quantity = parseInt(quantityInput.value, 10);
-
-    if (!text || isNaN(price) || isNaN(quantity) || price <= 0 || quantity <= 0) {
-        alert("Please enter valid data for all fields.");
-        return;
-    }
-
-    if (editingId) {
-        // Update the existing item
-        const itemIndex = inventory.findIndex(item => item.id === editingId);
-        if (itemIndex !== -1) {
-            inventory[itemIndex] = { id: editingId, name: text, price, quantity };
+            if (logoInput.files && logoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    logoPreview.src = e.target.result;
+                    logoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(logoInput.files[0]);
+            }
         }
-        editingId = null; // Reset editing state
-        btm.textContent = "Add"; // Reset button text
-        btm.classList.remove('editing'); // Remove editing class
-    } else {
-        // Add a new item
-        const lastId = inventory.length ? inventory[inventory.length - 1].id : 0;
-        inventory.push({ id: lastId + 1, name: text, price, quantity });
-    }
 
-    renderInventory(); // Re-render the inventory table
-    clearInputs(); // Clear input fields
-});
+        function saveProfile() {
+            const shopName = document.getElementById('shop-name').value;
+            const shopPhone = document.getElementById('shop-phone').value;
+            const logoPreview = document.getElementById('logo-preview');
 
-renderInventory();
+            if (shopName) {
+                document.getElementById('invoice-shop-name').textContent = shopName;
+            }
+
+            if (shopPhone) {
+                document.getElementById('invoice-shop-phone').textContent = shopPhone;
+            }
+
+            if (logoPreview.src) {
+                const invoiceLogo = document.getElementById('invoice-logo');
+                invoiceLogo.src = logoPreview.src;
+                invoiceLogo.style.display = 'block';
+            }
+
+            alert('Profile saved successfully!');
+        }
+
+        function selectItem(itemName, itemPrice) {
+            const invoiceItems = document.getElementById('invoice-items');
+            const row = document.createElement('tr');
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = itemName;
+            row.appendChild(nameCell);
+
+            const quantityCell = document.createElement('td');
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'number';
+            quantityInput.value = 1;
+            quantityInput.min = 1;
+            quantityInput.onchange = () => updateTotal(row, itemPrice);
+            quantityCell.appendChild(quantityInput);
+            row.appendChild(quantityCell);
+
+            const priceCell = document.createElement('td');
+            priceCell.textContent = itemPrice.toFixed(2);
+            row.appendChild(priceCell);
+
+            const totalCell = document.createElement('td');
+            totalCell.textContent = itemPrice.toFixed(2);
+            row.appendChild(totalCell);
+
+            invoiceItems.appendChild(row);
+        }
+
+        function updateTotal(row, itemPrice) {
+            const quantity = row.querySelector('input').value;
+            const totalCell = row.lastElementChild;
+            totalCell.textContent = (quantity * itemPrice).toFixed(2);
+        }
+////////////
 
 
-// pop up customer
-document.getElementById("customer-link").addEventListener("click", function (e) {
-    e.preventDefault();
-    const customerPopup = document.querySelector(".customer-popup");
-    customerPopup.classList.toggle("hidden");
-});
+////////////
+        function saveInvoice() {
+            const invoiceId = document.getElementById('invoice-id').textContent;
+            const customer = document.getElementById('customer-select').value;
+            const date = document.getElementById('invoice-date').textContent;
+            const items = [];
+            let total = 0;
 
-// Close button functionality
-const closeButton = document.createElement("button");
-closeButton.textContent = "X";
-closeButton.classList.add("close-btn");
-closeButton.addEventListener("click", function () {
-    document.querySelector(".customer-popup").classList.add("hidden");
-});
-document.querySelector(".customer-popup").prepend(closeButton);
+            document.querySelectorAll('#invoice-items tr').forEach(row => {
+                const itemName = row.children[0].textContent;
+                const quantity = row.children[1].querySelector('input').value;
+                const price = parseFloat(row.children[2].textContent);
+                const itemTotal = parseFloat(row.children[3].textContent);
 
-// Customer info elements
-const nameCustomerInput = document.getElementById("customerName");
-const addressCustomerInput = document.getElementById("customerAddress");
-const phoneCustomerInput = document.getElementById("customerPhone");
-const btmCustomer = document.getElementById("addCustomer");
-const customerList = document.getElementById("customer-list");
+                items.push({ name: itemName, quantity, price });
+                total += itemTotal;
+            });
 
-let customers = [
-    { id: 1, name: "John Doe", address: "123 Main St", phone: "123-456-7890" },
-    { id: 2, name: "Jane Smith", address: "456 Elm St", phone: "987-654-3210" },
-    { id: 3, name: "Alice Brown", address: "789 Oak St", phone: "456-789-1234" }
-];
+            savedInvoices.push({ invoiceId, customer, date, items, total });
 
-let editingCustomerId = null; // To track the customer being edited
+            const savedInvoiceList = document.getElementById('saved-invoice-list');
+            const row = document.createElement('tr');
 
-// Render customer data
-function renderCustomers() {
-    customerList.innerHTML = customers.map(customer => `
-        <tr>
-            <td>${customer.id}</td>
-            <td>${customer.name}</td>
-            <td>${customer.address}</td>
-            <td>${customer.phone}</td>
+            const idCell = document.createElement('td');
+            idCell.textContent = invoiceId;
+            row.appendChild(idCell);
+
+            const customerCell = document.createElement('td');
+            customerCell.textContent = customer;
+            row.appendChild(customerCell);
+
+            const dateCell = document.createElement('td');
+            dateCell.textContent = date;
+            row.appendChild(dateCell);
+
+            const itemsCell = document.createElement('td');
+            itemsCell.textContent = items.map(item => `${item.name} (${item.quantity})`).join(', ');
+            row.appendChild(itemsCell);
+
+            const totalCell = document.createElement('td');
+            totalCell.textContent = total.toFixed(2);
+            row.appendChild(totalCell);
+
+            savedInvoiceList.appendChild(row);
+
+            alert('Invoice saved successfully!');
+        }
+
+        function printInvoice() {
+            window.print();
+        }
+
+        function searchInvoices() {
+            const searchValue = document.getElementById('invoice-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#saved-invoice-list tr');
+
+            rows.forEach(row => {
+                const invoiceId = row.children[0].textContent.toLowerCase();
+                const customer = row.children[1].textContent.toLowerCase();
+                const date = row.children[2].textContent.toLowerCase();
+                const paymentStatus = row.children[5].textContent.toLowerCase();
+
+                if (
+                    invoiceId.includes(searchValue) ||
+                    customer.includes(searchValue) ||
+                    date.includes(searchValue) ||
+                    paymentStatus.includes(searchValue)
+                ) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function addCustomer() {
+            const customerName = prompt("Enter customer name:");
+            const customerEmail = prompt("Enter customer email:");
+            const customerPhone = prompt("Enter customer phone:");
+
+            if (customerName && customerEmail && customerPhone) {
+                const customerList = document.getElementById('customer-list');
+                const row = document.createElement('tr');
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = customerName;
+                row.appendChild(nameCell);
+
+                const emailCell = document.createElement('td');
+                emailCell.textContent = customerEmail;
+                row.appendChild(emailCell);
+
+                const phoneCell = document.createElement('td');
+                phoneCell.textContent = customerPhone;
+                row.appendChild(phoneCell);
+
+                customerList.appendChild(row);
+
+                // Add to customer dropdown
+                const customerSelect = document.getElementById('customer-select');
+                const option = document.createElement('option');
+                option.value = customerName;
+                option.textContent = customerName;
+                customerSelect.appendChild(option);
+            }
+        }
+
+        function addInventoryItem() {
+            const tableBody = document.getElementById('inventory-items');
+
+            // Prompt for item details
+            const itemName = prompt('Enter item name:');
+            const itemPrice = parseFloat(prompt('Enter item price:'));
+
+            if (itemName && !isNaN(itemPrice)) {
+                const newRow = document.createElement('tr');
+
+                newRow.innerHTML = `
+            <td>${itemName}</td>
+            <td>${itemPrice.toFixed(2)}</td>
             <td>
-             <button class="c-selete" onclick="seleteCustomer(${customer.id})">Selete</button>
-                <button class="c-edit" onclick="editCustomer(${customer.id})">Edit</button>
-                <button class="c-delete" onclick="clearCustomer(${customer.id})">Delete</button>
+                <button onclick="selectItem('${itemName}', ${itemPrice})">Select</button>
+                <button onclick="editInventoryItem(this)">Edit</button>
+                <button onclick="deleteInventoryItem(this)">Delete</button>
             </td>
-        </tr>
-    `).join("");
+        `;
+
+                tableBody.appendChild(newRow);
+            } else {
+                alert('Invalid item name or price!');
+            }
+        }
+
+        // Set current date for the invoice
+        document.getElementById('invoice-date').textContent = new Date().toLocaleDateString();
+
+        function saveInvoice() {
+            const invoiceId = document.getElementById('invoice-id').textContent;
+            const customer = document.getElementById('customer-select').value;
+            const date = document.getElementById('invoice-date').textContent;
+            const items = [];
+            let total = 0;
+
+            document.querySelectorAll('#invoice-items tr').forEach(row => {
+                const itemName = row.children[0].textContent;
+                const quantity = row.children[1].querySelector('input').value;
+                const price = parseFloat(row.children[2].textContent);
+                const itemTotal = parseFloat(row.children[3].textContent);
+
+                items.push({ name: itemName, quantity, price });
+                total += itemTotal;
+            });
+
+            savedInvoices.push({ invoiceId, customer, date, items, total, paymentStatus: "Pending" });
+
+            const savedInvoiceList = document.getElementById('saved-invoice-list');
+            const row = document.createElement('tr');
+
+            const idCell = document.createElement('td');
+            idCell.textContent = invoiceId;
+            row.appendChild(idCell);
+
+            const customerCell = document.createElement('td');
+            customerCell.textContent = customer;
+            row.appendChild(customerCell);
+
+            const dateCell = document.createElement('td');
+            dateCell.textContent = date;
+            row.appendChild(dateCell);
+
+            const itemsCell = document.createElement('td');
+            itemsCell.textContent = items.map(item => `${item.name} (${item.quantity})`).join(', ');
+            row.appendChild(itemsCell);
+
+            const totalCell = document.createElement('td');
+            totalCell.textContent = total.toFixed(2);
+            row.appendChild(totalCell);
+
+            const paymentStatusCell = document.createElement('td');
+            paymentStatusCell.textContent = "Pending";  // Default payment status is "Pending"
+            row.appendChild(paymentStatusCell);
+
+            const actionCell = document.createElement('td');
+            const markPaidButton = document.createElement('button');
+            markPaidButton.textContent = "Mark as Paid";
+            markPaidButton.onclick = () => markAsPaid(row, paymentStatusCell);
+            actionCell.appendChild(markPaidButton);
+            row.appendChild(actionCell);
+
+            savedInvoiceList.appendChild(row);
+
+            alert('Invoice saved successfully!');
+        }
+
+        function markAsPaid(row, paymentStatusCell) {
+            paymentStatusCell.textContent = "Paid";  // Change payment status to "Paid"
+
+            // You can also update the status in the savedInvoices array
+            const invoiceId = row.children[0].textContent;
+            const invoice = savedInvoices.find(invoice => invoice.invoiceId === invoiceId);
+            if (invoice) {
+                invoice.paymentStatus = "Paid";
+            }
+        }
+
+        function searchInvoices() {
+            const searchValue = document.getElementById('invoice-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#saved-invoice-list tr');
+
+            rows.forEach(row => {
+                const invoiceId = row.children[0].textContent.toLowerCase();
+                const customer = row.children[1].textContent.toLowerCase();
+                const date = row.children[2].textContent.toLowerCase();
+                const paymentStatus = row.children[5].textContent.toLowerCase();
+
+                if (invoiceId.includes(searchValue) || customer.includes(searchValue) || date.includes(searchValue) || paymentStatus.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // edit and delete on inventoryList
+        function editInventoryItem(button) {
+            const row = button.closest('tr');
+            const itemNameCell = row.cells[0];
+            const itemPriceCell = row.cells[1];
+
+            // Prompt for updated details
+            const newItemName = prompt('Edit item name:', itemNameCell.textContent);
+            const newItemPrice = parseFloat(prompt('Edit item price:', itemPriceCell.textContent));
+
+            if (newItemName && !isNaN(newItemPrice)) {
+                itemNameCell.textContent = newItemName;
+                itemPriceCell.textContent = newItemPrice.toFixed(2);
+            } else {
+                alert('Invalid item name or price!');
+            }
+        }
+
+        // Function to delete an inventory item
+        function deleteInventoryItem(button) {
+            const row = button.closest('tr');
+            row.remove();
+        }
+//dropdown inventory in invoice
+////
+function updateTotal(row, itemPrice) {
+    const quantity = row.querySelector('input').value;
+    const totalCell = row.lastElementChild;  // The last cell holds the total for the row
+    totalCell.textContent = (quantity * itemPrice).toFixed(2);
+
+    // After updating the row, recalculate the grand total
+    updateGrandTotal();
 }
 
-// Delete customer
-function clearCustomer(id) {
-    customers = customers.filter(customer => customer.id !== id);
-    renderCustomers();
-}
+// Recalculate the grand total
+function updateGrandTotal() {
+    let grandTotal = 0;
 
-// Clear input fields after adding/editing a customer
-function clearInputs() {
-    nameCustomerInput.value = "";
-    addressCustomerInput.value = "";
-    phoneCustomerInput.value = "";
-    editingCustomerId = null; // Clear the editing state
-    btmCustomer.textContent = "Add Customer"; // Reset button text to 'Add Customer'
-}
-
-// Edit customer details
-function editCustomer(id) {
-    const customer = customers.find(c => c.id === id);
-    if (customer) {
-        nameCustomerInput.value = customer.name;
-        addressCustomerInput.value = customer.address;
-        phoneCustomerInput.value = customer.phone;
-        editingCustomerId = id; // Set the editing state to the selected customer ID
-        btmCustomer.textContent = "Update Customer"; // Change button text to 'Update Customer'
-    }
-}
-
-function seleteCustomer(id) {
-    const customer = customers.find(c => c.id === id);
-    if (customer) {
-        // Update the invoice section with selected customer details
-        document.querySelector('.customer_name').textContent = customer.name;
-        document.querySelector('.phone_number').textContent = customer.phone;
-        document.querySelector('.customer-email a').textContent = customer.address; // Update email or other fields as needed
-    }
-}
-
-// Handle the click event on the 'Add Customer' / 'Update Customer' button
-btmCustomer.addEventListener('click', () => {
-    const Cname = nameCustomerInput.value.trim();
-    const Caddress = addressCustomerInput.value.trim();
-    const Cphone = phoneCustomerInput.value.trim();
-
-    if (!Cname || !Caddress || !Cphone) {
-        alert("Please enter valid data for all fields.");
-        return;
-    }
-
-    if (editingCustomerId === null) {
-        // Add new customer
-        const lastId = customers.length ? customers[customers.length - 1].id : 0;
-        customers.push({ id: lastId + 1, name: Cname, address: Caddress, phone: Cphone });
-    } else {
-        // Update existing customer
-        const customer = customers.find(c => c.id === editingCustomerId);
-        customer.name = Cname;
-        customer.address = Caddress;
-        customer.phone = Cphone;
-    }
-
-    renderCustomers();
-    clearInputs();
-});
-
-renderCustomers();
-
-// inventory popup
-const inventoryLink = document.getElementById("inventory-link");
-const inventoryPopup = document.querySelector(".inventory-popup");
-
-
-function toggleInventoryPopup() {
-    inventoryPopup.classList.toggle("hiddenInventory");
-}
-
-inventoryLink.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    toggleInventoryPopup();
-});
-// Close button functionality
-const closeInventoryButton = document.createElement("button");
-closeInventoryButton.textContent = "X";
-closeInventoryButton.classList.add("close-btn");
-closeInventoryButton.addEventListener("click", function () {
-    document.querySelector(".inventory-popup").classList.add("hiddenInventory");
-});
-inventoryPopup.prepend(closeInventoryButton);
-
-// customer edit on invoice
-function updateInvoice() {
-    let rows = document.querySelectorAll('#invoice-items tr');
-    let totalSum = 0;
-    
-    rows.forEach(row => {
-      const unitPrice = parseFloat(row.querySelector('.unit-price').value);
-      const quantity = parseInt(row.querySelector('.quantity').value);
-      const totalPriceElement = row.querySelector('.total-price');
-      const totalPrice = unitPrice * quantity;
-
-      totalPriceElement.textContent = totalPrice.toFixed(2);
-      totalSum += totalPrice;
+    // Loop through all rows in the invoice items table
+    document.querySelectorAll('#invoice-items tr').forEach(row => {
+        const totalInRow = parseFloat(row.querySelector('.totalInRow').textContent);
+        grandTotal += totalInRow;
     });
 
-    // Update the overall total
-    document.getElementById('total-sum').textContent = totalSum.toFixed(2);
-  }
+    // Update the grand total field
+    document.getElementById('grand-total').textContent = grandTotal.toFixed(2);
+}
+////
+function addSelectedInventoryItem() {
+    const inventoryDropdown = document.getElementById('inventory-dropdown');
+    const selectedItem = JSON.parse(inventoryDropdown.value);
 
-  // Listen for changes in unit price or quantity and update the totals
-  document.querySelectorAll('.unit-price, .quantity').forEach(input => {
-    input.addEventListener('input', updateInvoice);
-  });
+    const invoiceItemsTable = document.getElementById('invoice-items');
+    const newRow = document.createElement('tr');
 
-  // Initial call to populate totals when the page loads
-  updateInvoice();
+    newRow.innerHTML = `
+        <td>${selectedItem.name}</td>
+        <td><input type="number" value="1" min="1" oninput="updateTotal(this.parentElement.parentElement, ${selectedItem.price})"></td>
+        <td>${parseFloat(selectedItem.price).toFixed(2)}</td>
+        <td class="totalInRow">${parseFloat(selectedItem.price).toFixed(2)}</td>
+    `;
 
- 
+    invoiceItemsTable.appendChild(newRow);
+
+    // After adding a new item, update the grand total
+    updateGrandTotal();
+}
+
+// Function to populate the inventory dropdown
+function populateInventoryDropdown() {
+    const inventoryDropdown = document.getElementById('inventory-dropdown');
+    const inventoryRows = document.querySelectorAll('#inventory-items tr');
+
+    inventoryDropdown.innerHTML = ''; // Clear previous options
+
+    inventoryRows.forEach(row => {
+        const itemName = row.cells[0].textContent;
+        const itemPrice = row.cells[1].textContent;
+
+        const option = document.createElement('option');
+        option.value = JSON.stringify({ name: itemName, price: itemPrice });
+        option.textContent = `${itemName} - $${itemPrice}`;
+        inventoryDropdown.appendChild(option);
+    });
+}
+
+// Call this function to populate the dropdown after the page loads or when inventory changes
+populateInventoryDropdown();
+        /////
+  

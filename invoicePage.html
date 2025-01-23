@@ -2,281 +2,187 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Example 2</title>
-  <link rel="stylesheet" href="invoiceStyle.css" media="all" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="invoiceStyle.css">
 </head>
 
 <body>
-  <div class="dashboard">
-    <div class="wapper">
-      <div class="sideBar">
-        <div class="navigation">
-          <input type="checkbox" id="check">
-          <label for="check" class="check_btn">
-            <i class="fas fa-bars"></i>
-          </label>
-          <label for="logo" class="logoEasyinvoice">EasyInvoice</label>
-          <ul>
-            <li><a href="#profile-information">Profile</a></li>
-            <li><a href="#" id="customer-link">Customer</a></li>
-            <li><a href="#">List</a></li>
-            <li><a href="#" id="inventory-link">Inventory</a></li>
-            <li><button class="btnLogin-popup"  onclick="window.location.href='index.html'">LogOut</button></li>
-          </ul>
+    <div class="hamburger" onclick="toggleSidebar()">&#9776;</div>
+
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <a href="#" onclick="showSection('profile')"><i class="fas fa-user"></i> Profile</a>
+        <a href="#" onclick="showSection('invoice')"><i class="fas fa-file-invoice"></i> Create Invoice</a>
+        <a href="#" onclick="showSection('saved-invoices')"><i class="fas fa-save"></i> Saved Invoices</a>
+        <a href="#" onclick="showSection('customers')"><i class="fas fa-users"></i> Customer List</a>
+        <a href="#" onclick="showSection('inventory')"><i class="fas fa-box"></i> Inventory List</a>
+        <a href="index.html" onclick="logout()" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+    <div class="content">
+        <div id="profile" class="section">
+            <h2>Profile</h2>
+            <label for="shop-name">Shop Name:</label>
+            <input type="text" id="shop-name" placeholder="Enter shop name"><br><br>
+
+            <label for="shop-phone">Shop Phone:</label>
+            <input type="text" id="shop-phone" placeholder="Enter shop phone"><br><br>
+
+            <label for="shop-logo">Upload Logo:</label>
+            <input type="file" id="shop-logo" accept="image/*" onchange="previewLogo()"><br><br>
+
+            <img id="logo-preview" src="" alt="Logo Preview" style="max-width: 100px; display: none;">
+
+            <button onclick="saveProfile()"><i class="fas fa-save"></i> Save Profile</button>
         </div>
-      </div>
-      <div class="collom-invioce">
 
-        <!-- invoice -->
-        <div class="invoice">
-          <header class="clearfix">
-            <div id="company-logo">
-              <img src="logo.png" id="invoice-logo" alt="Company Logo">
+        <div id="invoice" class="section hidden">
+            <h2> Invoice</h2>
+            <div class="invoice-header">
+                <div><strong>Shop Name:</strong> <span id="invoice-shop-name">My Shop</span></div>
+                <div><strong>Phone:</strong> <span id="invoice-shop-phone">123-456-7890</span></div>
+                <div><strong>Logo:</strong> <img id="invoice-logo" src="" alt="Logo"
+                        style="max-width: 100px; display: none;"></div>
+                <div>
+                    <strong>Customer:</strong>
+                    <select id="customer-select">
+                        <option value="John Doe">John Doe</option>
+                        <option value="Jane Smith">Jane Smith</option>
+                    </select>
+                </div>
+                <div><strong>Invoice ID:</strong> <span id="invoice-id">INV12345</span></div>
+                <div><strong>Date:</strong> <span id="invoice-date"></span></div>
             </div>
-            <div id="company">
-              <h2 class="name" id="company-name"></h2>
-              <div id="company-address"></div>
-              <div id="company-phone"></div>
-              <div id="company-email"><a href="mailto:company@example.com">company@gmail.com</a></div>
-            </div>
-          </header>
-          <main>
-            <div id="details" class="clearfix">
-              <div id="client">
-                <div class="to">INVOICE TO:</div>
-                <h2 class="customer_name">Customer Name </h2>
-                <div class="phone_number">Phone Number</div>
-                <div class="customer-email"><a href="mailto:john@example.com">customer@example.com</a></div>
-              </div>
-              <div id="invoice">
-                <h1>INVOICE 3-2-1</h1>
-                <div class="invoice_date">Date: 17/01/2025</div>
-              </div>
-            </div>
-            <table border="0" cellspacing="0" cellpadding="0">
-              <thead>
-                <tr>
-                  <th class="no">#</th>
-                  <th class="desc">Description</th>
-                  <th class="unit">Unit Price</th>
-                  <th class="qty">Quantity</th>
-                  <th class="total">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="no_no">01</td>
-                  <td class="desc_no">Website Design</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">30</td>
-                  <td class="total_no" id="total-1">$1,200</td>
-                </tr>
-                <tr>
-                  <td class="no_no">02</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total_no" id="total-2">$3,200</td>
-                </tr>
-                <tr>
-                  <td class="no_no">03</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total" id="total-3">$3,200</td>
-                </tr>
-                <tr>
-                  <td class="no_no">04</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total" id="total-4">$3,200</td>
-                </tr>
-                <tr>
-                  <td class="no_no">05</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total" id="total-5">$3,200</td>
-                </tr>
-                <tr>
-                  <td class="no_no">06</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total" id="total-6">$3,200</td>
-                </tr>
-                <tr>
-                  <td class="no_no">07</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total" id="total-7">$3,200</td>
-                </tr>
-                <tr>
-                  <td class="no_no">08</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total" id="total-8">$3,200</td>
-                </tr>
-                <tr>
-                  <td class="no_no">09</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total" id="total-9">$3,200</td>
-                </tr>
-                <tr>
-                  <td class="no_no">10</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total" id="total-10">$3,200</td>
-                </tr>
-                <tr>
-                  <td class="no_no">11</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total" id="total-11">$8.500.5</td>
-                </tr>
-                <tr>
-                  <td class="no_no">12</td>
-                  <td class="desc_no">Website Development</td>
-                  <td class="unit_no">$40.00</td>
-                  <td class="qty_no">80</td>
-                  <td class="total" id="total-12">$3,200</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>
-                    <h3>ហត្ថលេខា</h3>
-                  </td>
-                </tr>
-
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="2"></td>
-                  <td colspan="2">Total</td>
-                  <td id="total-all">$5,200</td>
-                </tr>
-              </tfoot>
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th id="total-0">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="invoice-items">
+                    <strong>Inventory Item:</strong>
+                    <select id="inventory-dropdown">
+                        <!-- Items will be dynamically added here -->
+                     
+                    </select>
+                    <button onclick="addSelectedInventoryItem()"><i class="fas fa-plus-circle"></i> Add to Invoice</button>
+                    <!-- Invoice items will be added here dynamically -->
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Total:</td>
+                        <td id="grand-total"></td>
+                            
+                       
+                    </tr>
+                </tbody>
             </table>
-          </main>
-          <footer>
-            Invoice was created on a computer and is valid without the signature and seal.
-          </footer>
+            <!-- <button class="Inventory-dropdown" onclick="addInvoiceItem()"><i class="fas fa-plus-circle"></i> Add Item from Inventory</button> -->
+            <button onclick="saveInvoice()"><i class="fas fa-save"></i> Save Invoice</button>
+            <button onclick="printInvoice()"><i class="fas fa-print"></i> Print Invoice</button>
         </div>
-      </div>
+
+        <div id="saved-invoices" class="section hidden">
+            <h2>Saved Invoices</h2>
+            <div class="search-container">
+                <label for="invoice-search">Search by Invoice ID, Customer, or Date:</label>
+                <input type="text" id="invoice-search" oninput="searchInvoices()" placeholder="Search invoices...">
+            </div>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Invoice ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Payment Status</th> 
+                        <th>Action</th> 
+                    </tr>
+                </thead>
+                <tbody id="saved-invoice-list">
+                    <!-- Saved invoices will appear here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="customers" class="section hidden">
+            <h2>Customer List</h2>
+            <button onclick="addCustomer()"><i class="fas fa-user-plus"></i> Add New Customer</button>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody id="customer-list">
+                    <tr>
+                        <td>John Doe</td>
+                        <td>johndoe@example.com</td>
+                        <td>123-456-7890</td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>janesmith@example.com</td>
+                        <td>987-654-3210</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="inventory" class="section hidden">
+            <h2>Inventory List</h2>
+            <button onclick="addInventoryItem()"><i class="fas fa-box"></i> Add New Inventory Item</button>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-items">
+                    <tr>
+                        <td>Item A</td>
+                        <td>10.00</td>
+                        <td><button onclick="selectItem('Item A', 10.00)">Select</button>
+                            <button onclick="editInventoryItem(this)">Edit</button>
+                            <button onclick="deleteInventoryItem(this)">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Item B</td>
+                        <td>20.00</td>
+                        <td><button onclick="selectItem('Item B', 20.00)">Select</button>
+                            <button onclick="editInventoryItem(this)">Edit</button>
+                            <button onclick="deleteInventoryItem(this)">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Item c</td>
+                        <td>25.00</td>
+                        <td><button onclick="selectItem('Item c', 25.00)">Select</button>
+                            <button onclick="editInventoryItem(this)">Edit</button>
+                            <button onclick="deleteInventoryItem(this)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 
+    <script src="invoiceScript.js">
 
-  <!-- inventory pop up -->
-
-  <div class="inventory-popup hiddenInventory">
-    <h1>Inventory list</h1>
-    <div class="input-box">
-      <input type="text" id="text" placeholder="Add New Item">
-      <input type="text" id="price" placeholder="Add New price">
-      <input type="text" id="quantity" placeholder="Add New quantity">
-      <button id="add">add</button>
-    </div>
-    <table >
-      <thead>
-        <tr>
-          <th class="no">#</th>
-          <th class="desc">ទំនិញរាយមុខ</th>
-          <th class="unit">តម្លៃ</th>
-          <th class="qty">ចំនួន</th>
-          <th class="del">Delete</th>
-        </tr>
-      </thead>
-      <tbody id="inventory-list">
-        <tr id="textList">
-
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- customer information -->
-  <div class="customer-popup hidden">
-    <h1>Customer Management</h1>
-    <div class="input-box">
-      <input id="customerName" type="text" placeholder="Customer Name">
-      <input id="customerAddress" type="text" placeholder="Address">
-      <input id="customerPhone" type="text" placeholder="Phone Number">
-      <button id="addCustomer">Add Customer</button>
-
-    </div>
-    <table >
-      <thead>
-        <tr>
-          <th class="no">Customer ID</th>
-          <th class="desc">Customer Name</th>
-          <th class="unit">Address</th>
-          <th class="qty">Phone Number</th>
-          <th class="no"><a href="">Actions</a></th>
-
-        </tr>
-      </thead>
-      <tbody id="customer-list">
-      </tbody>
-    </table>
-  </div>
-
-  <!-- profile information -->
-  <div class="profile" id="profile-information">
-    <h2>Profile Information</h2>
-
-    <!-- Logo Upload Section -->
-    <div id="logo-section">
-      <img id="profile-logo" src="logo.png" alt="Logo" style="width: 100px; height: 100px; object-fit: cover;">
-      <br>
-      <input type="file" id="logo-upload" accept="image/*" style="display: none;" onchange="previewLogo(event)">
-      <button id="upload-logo-button" onclick="document.getElementById('logo-upload').click()">Upload Logo</button>
-    </div>
-
-    <table border="1" cellspacing="0" cellpadding="5">
-      <thead>
-        <tr>
-          <th>Field</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Name</td>
-          <td id="profile-name">John Doe</td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td id="profile-email">john@example.com</td>
-        </tr>
-        <tr>
-          <td>Phone</td>
-          <td id="profile-phone">123-456-7890</td>
-        </tr>
-        <tr>
-          <td>Address</td>
-          <td id="profile-address">123 Main St, City</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <button id="edit-button" onclick="enableEditing()">Edit</button>
-    <button id="save-button" onclick="saveProfileData()" style="display: none;">Save</button>
-  </div>
-
-
-  <script src="invoiceScript.js">
-  </script>
+    </script>
 </body>
 
 </html>
