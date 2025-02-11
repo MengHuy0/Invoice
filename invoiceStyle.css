@@ -29,6 +29,7 @@ body {
   color: white;
   font-size: 24px;
   margin-bottom: 20px;
+  text-transform: uppercase;
 }
 
 .sidebar a {
@@ -67,6 +68,7 @@ body {
   transition: margin-left 0.3s ease-in-out;
 }
 
+
 .section {
   background: #fff;
   padding: 20px;
@@ -74,11 +76,16 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
-
+h2{
+  margin: 15px 0px;
+  font-size: 40px;
+  text-transform: uppercase;
+}
 #profile input,
 #profile button {
-  width: 100%;
+  width: 95%;
   padding: 10px;
+  margin-top: 15px;
   margin-bottom: 15px;
   border-radius: 5px;
   border: 1px solid #ddd;
@@ -199,6 +206,10 @@ button:active {
   align-items: center;
   justify-content: space-between;
 }
+#hideitem{
+  padding: 5px;
+ 
+}
 
 .search-container {
   margin-bottom: 20px;
@@ -258,4 +269,23 @@ margin-left: -80%; /* Hide content when sidebar is visible */
 top: 10px;
 left: 10px; /* Adjust position of hamburger for very small screens */
 }
+}
+
+/* Print-specific styles */
+@media print {
+  .sidebar * {
+      visibility: hidden;
+  }
+  #invoice-items{
+    visibility: hidden;
+  }
+  /* Make only the invoice visible */
+  #invoice, #invoice,* {
+      visibility: visible; 
+  }
+  #invoice {
+      position: absolute;
+      top: 0;
+      left: 0;
+  }
 }

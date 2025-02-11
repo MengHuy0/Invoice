@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="stylesheet" href="invoiceStyle.css">
+    <link rel="stylesheet" href="invoiceStyle.css">
 </head>
 
 <body>
     <div class="hamburger" onclick="toggleSidebar()">&#9776;</div>
 
     <div class="sidebar">
-        <h2>Dashboard</h2>
+        <h2>Easy Invoice</h2>
         <a href="#" onclick="showSection('profile')"><i class="fas fa-user"></i> Profile</a>
         <a href="#" onclick="showSection('invoice')"><i class="fas fa-file-invoice"></i> Create Invoice</a>
         <a href="#" onclick="showSection('saved-invoices')"><i class="fas fa-save"></i> Saved Invoices</a>
@@ -41,19 +41,25 @@
         <div id="invoice" class="section hidden">
             <h2> Invoice</h2>
             <div class="invoice-header">
-                <div><strong>Shop Name:</strong> <span id="invoice-shop-name">My Shop</span></div>
-                <div><strong>Phone:</strong> <span id="invoice-shop-phone">123-456-7890</span></div>
-                <div><strong>Logo:</strong> <img id="invoice-logo" src="" alt="Logo"
-                        style="max-width: 100px; display: none;"></div>
-                <div>
-                    <strong>Customer:</strong>
-                    <select id="customer-select">
-                        <option value="John Doe">John Doe</option>
-                        <option value="Jane Smith">Jane Smith</option>
-                    </select>
+                <div class="shop-info">
+                    <div><strong>Shop Name:</strong> <span id="invoice-shop-name">My Shop</span></div>
+                    <div><strong>Phone:</strong> <span id="invoice-shop-phone">123-456-7890</span></div>
+                    <div><strong>Logo:</strong> <img id="invoice-logo" src="" alt="Logo"
+                            style="max-width: 100px; display: none;"></div>
                 </div>
-                <div><strong>Invoice ID:</strong> <span id="invoice-id">INV12345</span></div>
-                <div><strong>Date:</strong> <span id="invoice-date"></span></div>
+                <div class="customer-info">
+                    <div><strong>Customer:</strong>
+                        <select id="customer-select">
+                            <option value="John Doe">John Doe</option>
+                            <option value="Jane Smith">Jane Smith</option>
+                        </select>
+                    </div>
+                
+                <div><strong>Invoice ID:</strong> <span id="invoice-id">INV00000</span></div>
+                <div><strong>Date:</strong> <span id="invoice-date"></span></div></div>
+                <!-- Button to Add New Invoice -->
+                <button onclick="addNewInvoice()">Add New Invoice</button>
+
             </div>
             <table class="invoice-table">
                 <thead>
@@ -65,12 +71,12 @@
                     </tr>
                 </thead>
                 <tbody id="invoice-items">
-                    <strong>Inventory Item:</strong>
-                    <select id="inventory-dropdown">
-                        <!-- Items will be dynamically added here -->
-                     
-                    </select>
-                    <button onclick="addSelectedInventoryItem()"><i class="fas fa-plus-circle"></i> Add to Invoice</button>
+                    <strong id="hideitem">Inventory Item: <select id="inventory-dropdown"> </select></strong>
+
+                    <!-- Items will be dynamically added here -->
+
+                    <button onclick="addSelectedInventoryItem()"><i class="fas fa-plus-circle"></i> Add to
+                        Invoice</button>
                     <!-- Invoice items will be added here dynamically -->
                 </tbody>
                 <tbody>
@@ -79,8 +85,8 @@
                         <td></td>
                         <td>Total:</td>
                         <td id="grand-total"></td>
-                            
-                       
+
+
                     </tr>
                 </tbody>
             </table>
@@ -103,8 +109,8 @@
                         <th>Date</th>
                         <th>Items</th>
                         <th>Total</th>
-                        <th>Payment Status</th> 
-                        <th>Action</th> 
+                        <th>Payment Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="saved-invoice-list">
