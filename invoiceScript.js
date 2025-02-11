@@ -195,6 +195,7 @@ function selectItem(itemName, itemPrice) {
     row.appendChild(totalCell);
 
     invoiceItems.appendChild(row);
+    updateGrandTotal();
 }
 
 function updateTotal(row, itemPrice) {
@@ -336,6 +337,7 @@ function addInventoryItem() {
     } else {
         alert('Invalid item name or price!');
     }
+    populateInventoryDropdown();
 }
 
 // Set current date for the invoice
