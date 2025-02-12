@@ -11,6 +11,35 @@ if (authToken) {
     window.location.href = 'index.html';  // Adjust this URL as necessary
 }
 // ////////////////////
+// Function to fetch customer data from the backend
+async function fetchCustomers() {
+    try {
+        const response = await fetch('http://localhost:5000/api/customers');  // URL of the API
+        if (!response.ok) {
+            throw new Error('Failed to fetch customers');
+        }
+        const customers = await response.json();
+
+        // Get the customer-select dropdown element
+        const customerSelect = document.getElementById('customer-select');
+
+        // Clear the existing options (if any)
+        customerSelect.innerHTML = '<option value="">Select Customer</option>';
+
+        // Populate the dropdown with customers from the database
+        customers.forEach(customer => {
+            const option = document.createElement('option');
+            option.value = customer.name;  // You can store the _id if needed
+            option.textContent = customer.name;
+            customerSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching customers:', error);
+    }
+}
+
+// Call the fetchCustomers function when the page loads
+document.addEventListener('DOMContentLoaded', fetchCustomers);
 // // ✅ Fetch and display invoices
 async function fetchInvoices() {
     try {
@@ -41,29 +70,130 @@ async function fetchInvoices() {
     }
 }
 // ✅ Fetch and display customers
-async function fetchCustomers() {
+async function fetchAndDisplayCustomers() {
     try {
-        const response = await fetch(`${API_BASE_URL}/customers`); 
-        if (!response.ok) {
-            throw new Error('Failed to fetch customers');
-        }
+        const response = await fetch('http://localhost:5000/api/customers');
         const customers = await response.json();
-        populateCustomerDropdown(customers);
+
+        const customerTableBody = document.getElementById('customer-list');
+        customerTableBody.innerHTML = ''; // Clear existing rows
+
+        customers.forEach(customer => {
+            const row = document.createElement('tr');
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = customer.name;
+            row.appendChild(nameCell);
+
+            const emailCell = document.createElement('td');
+            emailCell.textContent = customer.email;
+            row.appendChild(emailCell);
+
+            const phoneCell = document.createElement('td');
+            phoneCell.textContent = customer.phone;
+            row.appendChild(phoneCell);
+
+            const actionCell = document.createElement('td');
+            actionCell.innerHTML = `
+                <button onclick="editCustomer('${customer._id}', '${customer.name}', '${customer.email}', '${customer.phone}')">Edit</button>
+                <button onclick="deleteCustomer('${customer._id}')">Delete</button>
+            `;
+            row.appendChild(actionCell);
+
+            customerTableBody.appendChild(row);
+        });
     } catch (error) {
         console.error('Error fetching customers:', error);
     }
 }
 
-// ✅ Fetch and display inventory items
-async function fetchInventory() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/inventory`);
-        const inventory = await response.json();
-        populateInventoryDropdown(inventory);
-    } catch (error) {
-        console.error("Error fetching inventory:", error);
+// Function to edit a customer
+async function editCustomer(id, currentName, currentEmail, currentPhone) {
+    const newName = prompt('Enter new name:', currentName);
+    const newEmail = prompt('Enter new email:', currentEmail);
+    const newPhone = prompt('Enter new phone:', currentPhone);
+
+    if (newName && newEmail && newPhone) {
+        try {
+            const response = await fetch(`http://localhost:5000/api/customers/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: newName, email: newEmail, phone: newPhone }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update customer');
+            }
+
+            // Refresh the customer list after editing
+            fetchAndDisplayCustomers();
+        } catch (error) {
+            console.error('Error updating customer:', error);
+        }
+    } else {
+        alert('All fields are required!');
     }
 }
+
+// Function to delete a customer
+async function deleteCustomer(id) {
+    if (confirm('Are you sure you want to delete this customer?')) {
+        try {
+            const response = await fetch(`http://localhost:5000/api/customers/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete customer');
+            }
+
+            // Refresh the customer list after deleting
+            fetchAndDisplayCustomers();
+        } catch (error) {
+            console.error('Error deleting customer:', error);
+        }
+    }
+}
+
+// Call the function to fetch and display customers when the page loads
+document.addEventListener('DOMContentLoaded', fetchAndDisplayCustomers);
+// ✅ Fetch and display inventory items
+async function fetchAndDisplayInventory() {
+    try {
+        const response = await fetch('http://localhost:5000/api/inventory');
+        const inventory = await response.json();
+
+        const inventoryTableBody = document.getElementById('inventory-items');
+        inventoryTableBody.innerHTML = ''; // Clear existing rows
+
+        inventory.forEach(item => {
+            const row = document.createElement('tr');
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = item.name;
+            row.appendChild(nameCell);
+
+            const priceCell = document.createElement('td');
+            priceCell.textContent = item.price.toFixed(2);
+            row.appendChild(priceCell);
+
+            const actionCell = document.createElement('td');
+            actionCell.innerHTML = `
+                <button onclick="editInventoryItem('${item._id}', '${item.name}', ${item.price})">Edit</button>
+                <button onclick="deleteInventoryItem('${item._id}')">Delete</button>
+            `;
+            row.appendChild(actionCell);
+
+            inventoryTableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching inventory:', error);
+    }
+}
+
+// Call the function to fetch and display inventory when the page loads
+document.addEventListener('DOMContentLoaded', fetchAndDisplayInventory);
+
 // ✅ Submit new invoice
 async function submitInvoice(invoiceData) {
     try {
@@ -309,29 +439,50 @@ function searchInvoices() {
 // Fetch invoices when the page loads
 document.addEventListener("DOMContentLoaded", fetchInvoices);
 // edit and delete on inventoryList
-function editInventoryItem(button) {
-    const row = button.closest('tr');
-    const itemNameCell = row.cells[0];
-    const itemPriceCell = row.cells[1];
+async function editInventoryItem(id, currentName, currentPrice) {
+    const newName = prompt('Enter new item name:', currentName);
+    const newPrice = parseFloat(prompt('Enter new item price:', currentPrice));
 
-    // Prompt for updated details
-    const newItemName = prompt('Edit item name:', itemNameCell.textContent);
-    const newItemPrice = parseFloat(prompt('Edit item price:', itemPriceCell.textContent));
+    if (newName && !isNaN(newPrice)) {
+        try {
+            const response = await fetch(`http://localhost:5000/api/inventory/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: newName, price: newPrice }),
+            });
 
-    if (newItemName && !isNaN(newItemPrice)) {
-        itemNameCell.textContent = newItemName;
-        itemPriceCell.textContent = newItemPrice.toFixed(2);
+            if (!response.ok) {
+                throw new Error('Failed to update item');
+            }
+
+            // Refresh the inventory table
+            fetchAndDisplayInventory();
+        } catch (error) {
+            console.error('Error updating item:', error);
+        }
     } else {
-        alert('Invalid item name or price!');
+        alert('Invalid input');
     }
-
 }
 
 // Function to delete an inventory item
-function deleteInventoryItem(button) {
-    const row = button.closest('tr');
-    row.remove();
+async function deleteInventoryItem(id) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        try {
+            const response = await fetch(`http://localhost:5000/api/inventory/${id}`, {
+                method: 'DELETE',
+            });
 
+            if (!response.ok) {
+                throw new Error('Failed to delete item');
+            }
+
+            // Refresh the inventory table
+            fetchAndDisplayInventory();
+        } catch (error) {
+            console.error('Error deleting item:', error);
+        }
+    }
 }
 //dropdown inventory in invoice
 ////
@@ -366,28 +517,38 @@ function addSelectedInventoryItem() {
     updateGrandTotal();
 }
 ////////////////////////////////////fucntion section
+async function populateInventoryDropdown() {
+    try {
+        // Fetch inventory data from the backend
+        const response = await fetch(`${API_BASE_URL}/inventory`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`, // Include auth token if required
+            },
+        });
 
-// Function to populate the inventory dropdown
-function populateInventoryDropdown() {
-    const inventoryDropdown = document.getElementById('inventory-dropdown');
-    const inventoryRows = document.querySelectorAll('#inventory-items tr');
+        if (!response.ok) {
+            throw new Error('Failed to fetch inventory data');
+        }
 
-    inventoryDropdown.innerHTML = ''; // Clear previous options
+        const inventory = await response.json();
+        const inventoryDropdown = document.getElementById('inventory-dropdown');
+        inventoryDropdown.innerHTML = '<option value="">Select Item</option>'; // Clear previous options
 
-    inventoryRows.forEach(row => {
-        const itemName = row.cells[0].textContent;
-        const itemPrice = row.cells[1].textContent;
-
-        const option = document.createElement('option');
-        option.value = JSON.stringify({ name: itemName, price: itemPrice });
-        option.textContent = `${itemName} - $${itemPrice}`;
-        inventoryDropdown.appendChild(option);
-    });
+        // Loop through the inventory and create dropdown options
+        inventory.forEach(item => {
+            const option = document.createElement('option');
+            option.value = JSON.stringify({ name: item.name, price: item.price }); // Store item as JSON string
+            option.textContent = `${item.name} - $${item.price.toFixed(2)}`; // Display item name and price
+            inventoryDropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching inventory:', error);
+        alert('Failed to load inventory. Please try again.');
+    }
 }
 
 // Call this function to populate the dropdown after the page loads or when inventory changes
-populateInventoryDropdown();
-/////
+document.addEventListener('DOMContentLoaded', populateInventoryDropdown);
 // Recalculate the grand total
 function updateGrandTotal() {
     let grandTotal = 0;
@@ -567,46 +728,21 @@ async function addCustomer() {
     const customerName = prompt("Enter customer name:");
     const customerEmail = prompt("Enter customer email:");
     const customerPhone = prompt("Enter customer phone:");
-    
+
     if (customerName && customerEmail && customerPhone) {
         try {
             const response = await fetch("http://localhost:5000/api/customers", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: customerName, email: customerEmail, phone: customerPhone })
+                body: JSON.stringify({ name: customerName, email: customerEmail, phone: customerPhone }),
             });
-            
+
             if (!response.ok) {
                 throw new Error("Failed to add customer");
             }
-            
-            const newCustomer = await response.json();
-            
-            // Update customer list in UI
-            const customerList = document.getElementById("customer-list");
-            const row = document.createElement("tr");
 
-            const nameCell = document.createElement("td");
-            nameCell.textContent = newCustomer.name;
-            row.appendChild(nameCell);
-
-            const emailCell = document.createElement("td");
-            emailCell.textContent = newCustomer.email;
-            row.appendChild(emailCell);
-
-            const phoneCell = document.createElement("td");
-            phoneCell.textContent = newCustomer.phone;
-            row.appendChild(phoneCell);
-
-            customerList.appendChild(row);
-
-            // Add to customer dropdown
-            const customerSelect = document.getElementById("customer-select");
-            const option = document.createElement("option");
-            option.value = newCustomer._id;
-            option.textContent = newCustomer.name;
-            customerSelect.appendChild(option);
-
+            // Refresh the customer list after adding a new customer
+            fetchAndDisplayCustomers();
             alert("Customer added successfully!");
         } catch (error) {
             console.error("Error adding customer:", error);
@@ -618,48 +754,33 @@ async function addCustomer() {
 }
 
 async function addInventoryItem() {
-    const tableBody = document.getElementById('inventory-items');
-
-    // Prompt for item details
     const itemName = prompt('Enter item name:');
     const itemPrice = parseFloat(prompt('Enter item price:'));
 
     if (itemName && !isNaN(itemPrice)) {
         try {
-            const response = await fetch("http://localhost:5000/api/inventory", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: itemName, price: itemPrice })
+            const response = await fetch(`${API_BASE_URL}/inventory`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`, // Include auth token if required
+                },
+                body: JSON.stringify({ name: itemName, price: itemPrice }),
             });
 
             if (!response.ok) {
-                throw new Error("Failed to add inventory item");
+                throw new Error('Failed to add inventory item');
             }
 
-            const newItem = await response.json();
-
-            // Add new item to table
-            const newRow = document.createElement("tr");
-            newRow.innerHTML = `
-                <td>${newItem.name}</td>
-                <td>${newItem.price.toFixed(2)}</td>
-                <td>
-                    <button onclick="selectItem('${newItem.name}', ${newItem.price})">Select</button>
-                    <button onclick="editInventoryItem(this)">Edit</button>
-                    <button onclick="deleteInventoryItem(this)">Delete</button>
-                </td>
-            `;
-
-            tableBody.appendChild(newRow);
+            // Refresh the inventory dropdown after adding a new item
             populateInventoryDropdown();
-            alert("Item added successfully!");
-
+            alert('Item added successfully!');
         } catch (error) {
-            console.error("Error adding inventory item:", error);
-            alert("Failed to add item. Please try again.");
+            console.error('Error adding inventory item:', error);
+            alert('Failed to add item. Please try again.');
         }
     } else {
-        alert("Invalid item name or price!");
+        alert('Invalid item name or price!');
     }
 }
 ////////////////////Profile
