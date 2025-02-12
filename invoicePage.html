@@ -99,7 +99,7 @@
             <h2>Saved Invoices</h2>
             <div class="search-container">
                 <label for="invoice-search">Search by Invoice ID, Customer, or Date:</label>
-                <input type="text" id="invoice-search" oninput="searchInvoices()" placeholder="Search invoices...">
+                <input type="text" id="invoice-search" oninput="searchInvoices()" placeholder="Search invoices..." onkeyup="searchInvoices()">
             </div>
             <table class="inventory-table">
                 <thead>
