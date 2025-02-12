@@ -54,18 +54,49 @@ async function fetchInvoices() {
 
         invoices.forEach(invoice => {
             const row = document.createElement("tr");
-            const itemsName = invoice.items.map(items => items.name+ `(${items.quantity})`).join(",");
-            const itemsTotal = invoice.items.map(items => items.total);
+
+            // Create the cells for each invoice
+            const idCell = document.createElement('td');
+            idCell.textContent = invoice.invoiceId;
+            row.appendChild(idCell);
+
+            const customerCell = document.createElement('td');
+            customerCell.textContent = invoice.customer;
+            row.appendChild(customerCell);
+
+            const dateCell = document.createElement('td');
+            dateCell.textContent = invoice.date;
+            row.appendChild(dateCell);
+
+            // Add the items (map over the items and display them)
+            const itemsName = invoice.items.map(item => `${item.name} (${item.quantity})`).join(",");
+            const itemsCell = document.createElement('td');
+            itemsCell.textContent = itemsName;
+            row.appendChild(itemsCell);
+
+            // Calculate the total sum of the items
+            const itemsTotal = invoice.items.map(item => item.total);
             const totalSum = itemsTotal.reduce((sum, total) => sum + total, 0);
-            console.log("itemname:", itemsName);
-            row.innerHTML = `
-                <td>${invoice.invoiceId}</td>
-                <td>${invoice.customer}</td>
-                <td>${invoice.date}</td>
-                <td>${itemsName} </td>
-                <td>${totalSum}</td>
-                <td>${invoice.paymentStatus}</td>
-            `;
+            const totalCell = document.createElement('td');
+            totalCell.textContent = totalSum.toFixed(2);
+            row.appendChild(totalCell);
+
+            // Add the payment status
+            const paymentStatusCell = document.createElement('td');
+            paymentStatusCell.textContent = invoice.paymentStatus;
+            row.appendChild(paymentStatusCell);
+
+            // Create the "Mark as Paid" button and append it
+            const actionCell = document.createElement('td');
+            if (invoice.paymentStatus === "Pending") {  // Only show button if status is "Pending"
+                const markPaidButton = document.createElement('button');
+                markPaidButton.textContent = "Mark as Paid";
+                markPaidButton.onclick = () => markAsPaid(row, paymentStatusCell); // Add the event handler for the button
+                actionCell.appendChild(markPaidButton);
+            }
+            row.appendChild(actionCell);
+
+            // Append the row to the table body
             tableBody.appendChild(row);
         });
     } catch (error) {
@@ -73,6 +104,7 @@ async function fetchInvoices() {
         alert("Failed to fetch invoices. Please try again.");
     }
 }
+
 // ✅ Fetch and display customers
 async function fetchAndDisplayCustomers() {
     try {
@@ -725,6 +757,37 @@ function saveInvoice() {
 
     alert('Invoice saved successfully!');
 
+}
+async function markAsPaid(row, paymentStatusCell) {
+    try {
+        // Assuming the invoiceId is available in the row, you can get it like this:
+        const invoiceId = row.children[0].textContent;
+        
+        // Prepare the data to send in the PUT request to update the payment status
+        const updatedData = {
+            paymentStatus: 'Paid'
+        };
+
+        // Send a PUT request to your API to update the payment status in MongoDB
+        const response = await fetch(`${API_BASE_URL}/invoices/${invoiceId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update the payment status');
+        }
+
+        // Update the payment status in the UI if the update is successful
+        paymentStatusCell.textContent = "Paid";
+        alert('Invoice marked as paid!');
+    } catch (error) {
+        console.error("Error updating payment status:", error);
+        alert("Failed to mark as paid. Please try again.");
+    }
 }
 
 // ✅ Populate customers in dropdown
