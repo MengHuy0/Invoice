@@ -54,12 +54,16 @@ async function fetchInvoices() {
 
         invoices.forEach(invoice => {
             const row = document.createElement("tr");
+            const itemsName = invoice.items.map(items => items.name+ `(${items.quantity})`).join(",");
+            const itemsTotal = invoice.items.map(items => items.total);
+            const totalSum = itemsTotal.reduce((sum, total) => sum + total, 0);
+            console.log("itemname:", itemsName);
             row.innerHTML = `
                 <td>${invoice.invoiceId}</td>
                 <td>${invoice.customer}</td>
                 <td>${invoice.date}</td>
-                <td>${invoice.items.length}</td>
-                <td>${invoice.totalAmount.toFixed(2)}</td>
+                <td>${itemsName} </td>
+                <td>${totalSum}</td>
                 <td>${invoice.paymentStatus}</td>
             `;
             tableBody.appendChild(row);
